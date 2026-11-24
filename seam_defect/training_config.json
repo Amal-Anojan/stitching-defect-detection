@@ -1,0 +1,63 @@
+{
+  "densenet121_fpn": {
+    "batch_size": 16,
+    "accumulation_steps": 1,
+    "max_epochs": 60,
+    "early_stopping_patience": 10,
+    "backbone_lr": 3e-05,
+    "head_lr": 0.0003,
+    "weight_decay": 0.0001,
+    "dropout": 0.4,
+    "label_smoothing": 0.03,
+    "scheduler_patience": 3,
+    "scheduler_factor": 0.5,
+    "min_backbone_lr": 1e-06,
+    "min_head_lr": 1e-05
+  },
+  "convnext_tiny_fpn": {
+    "batch_size": 8,
+    "accumulation_steps": 2,
+    "max_epochs": 70,
+    "early_stopping_patience": 12,
+    "backbone_lr": 1e-05,
+    "head_lr": 0.0002,
+    "weight_decay": 0.05,
+    "dropout": 0.3,
+    "label_smoothing": 0.08,
+    "scheduler_patience": 4,
+    "scheduler_factor": 0.5,
+    "min_backbone_lr": 5e-07,
+    "min_head_lr": 5e-06
+  },
+  "efficientnet_b0_fpn": {
+    "batch_size": 24,
+    "accumulation_steps": 1,
+    "max_epochs": 60,
+    "early_stopping_patience": 10,
+    "backbone_lr": 8e-05,
+    "head_lr": 0.0004,
+    "weight_decay": 1e-05,
+    "dropout": 0.25,
+    "label_smoothing": 0.05,
+    "scheduler_patience": 3,
+    "scheduler_factor": 0.5,
+    "min_backbone_lr": 1e-06,
+    "min_head_lr": 1e-05
+  },
+  "resnet18_fpn": {
+    "batch_size": 64,
+    "accumulation_steps": 1,
+    "max_epochs": 60,
+    "min_epochs": 10,
+    "early_stopping_patience": 10,
+    "backbone_lr": 5e-05,
+    "head_lr": 0.0003,
+    "weight_decay": 0.0001,
+    "dropout": 0.3,
+    "label_smoothing": 0.03,
+    "scheduler_patience": 3,
+    "scheduler_factor": 0.5,
+    "min_backbone_lr": 1e-06,
+    "min_head_lr": 1e-05
+  }
+}

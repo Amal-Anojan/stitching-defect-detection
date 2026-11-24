@@ -1,96 +1,18 @@
-
-# Jupyter temporary files
 .ipynb_checkpoints/
-**/.ipynb_checkpoints/
-
-# Dataset and image cache
 **/data/
-
-# Model checkpoints and generated models
-*.pth
-*.pt
-*.pkl
-*.ckpt
-
-# Credentials
-.env
-.aws/
-*.pem
-*.key
-
-# Python temporary files
-__pycache__/
-*.pyc
-
-# Jupyter temporary files
-.ipynb_checkpoints/
-**/.ipynb_checkpoints/
-
-# Dataset and image cache
-**/data/
-
-# Model checkpoints and generated models
-*.pth
-*.pt
-*.pkl
-*.ckpt
-
-# Credentials
-.env
-.aws/
-*.pem
-*.key
-
-# Python temporary files
-__pycache__/
-*.pyc
-
-# Jupyter temporary files
-.ipynb_checkpoints/
-**/.ipynb_checkpoints/
-
-# Dataset and image cache
-**/data/
-
-# Model checkpoints and generated models
-*.pth
-*.pt
-*.pkl
-*.ckpt
-
-# Credentials
-.env
-.aws/
-*.pem
-*.key
-
-# Python temporary files
-__pycache__/
-*.pyc
-
-# Jupyter temporary files
-.ipynb_checkpoints/
-**/.ipynb_checkpoints/
-
-# Dataset and image cache
-**/data/
-
-# Model checkpoints and generated models
-*.pth
-*.pt
-*.pkl
-*.ckpt
-
-# Credentials
-.env
-.aws/
-*.pem
-*.key
-
-# Python temporary files
-__pycache__/
-*.pyc
 **/reports/
+**/models/
+runs/
+*.pth
+*.pt
+*.pkl
+*.ckpt
+.env
+.aws/
+*.pem
+*.key
+__pycache__/
+*.pyc
 
-models/
-Notebooks/models/
+/_download/
+*.csv
