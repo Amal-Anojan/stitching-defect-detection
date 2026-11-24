@@ -7,9 +7,9 @@ import torch
 from PIL import Image, ImageOps, UnidentifiedImageError
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from seam_defect.models import FPNClassifier
-from seam_defect.data import evaluation_transform
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from model import FPNClassifier
+from torchvision import transforms
 WEIGHTS = ROOT / "models/experiment19_fpn_backbones/efficientnet_b0_fpn/best_model.pth"
 
 
@@ -19,7 +19,8 @@ def load_classifier():
     network = FPNClassifier(checkpoint["architecture"], checkpoint["num_classes"], pretrained=False)
     network.load_state_dict(checkpoint["model_state_dict"])
     size = checkpoint["image_size"]
-    preprocess = evaluation_transform(size, checkpoint["imagenet_mean"], checkpoint["imagenet_std"])
+    preprocess = transforms.Compose([transforms.Resize((size, size)), transforms.ToTensor(),
+                                     transforms.Normalize(checkpoint["imagenet_mean"], checkpoint["imagenet_std"])])
     return network.eval(), preprocess, checkpoint["class_names"]
 
 
