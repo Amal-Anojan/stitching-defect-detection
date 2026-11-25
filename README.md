@@ -2,7 +2,7 @@
 
 This project classifies a photograph of a sewn seam into one of 11 StitchingNet classes. The AWS Jupyter notebooks prepare the images, train and compare classifiers, and export mistakes for inspection. A Streamlit app serves the selected **EfficientNet-B0 + Feature Pyramid Network (FPN)** checkpoint and shows the three highest-scoring classes for an uploaded photo.
 
-**Measured performance:** the selected checkpoint classified 2,199 of 2,208 internal test images correctly (99.59%). Real garment photos exposed confident errors, including a loose thread classified as stain and damage. Treat the app as an inspection demo until performance is measured on independently labeled garments from the intended camera setup.
+In the previous experiment, the deployed checkpoint classified 2,199 of 2,208 internal test images correctly (99.59%). Real garment photos exposed confident errors, including a loose thread classified as stain and damage. Treat the app as an inspection demo until performance is measured on independently labeled garments from the intended camera setup.
 
 ## Dataset and inputs
 
@@ -43,6 +43,8 @@ The notebooks use PyTorch and torchvision for transfer learning, OpenCV and Pill
 
 ## How the model was chosen
 
+For a complete fresh comparison, run notebook 06 once (two RGB runs), then 07 once (three additional RGB runs), then 08 once (two enhanced runs for the leading FPN backbone). Reuse the RGB ResNet18 + FPN from 06 in the four-backbone comparison. Notebook 09 is optional and evaluates saved checkpoints.
+
 The corrected split has 10,154 training, 2,203 validation, and 2,208 test images. Splitting is stratified by fabric and class, with identical file hashes assigned to the same split. For a field evaluation, keep photos of the same garment together.
 
 1. Compare plain ResNet18 and ResNet18 + FPN using original RGB. The FPN combines features from multiple resolutions.
@@ -73,7 +75,7 @@ These values describe the saved historical experiments. A fresh run of the conso
 | Log loss / expected calibration error | 0.06951 / 0.04309 | Examine predicted probabilities, especially confident mistakes. |
 | Batched inference throughput | 760.65 images/s | Historical benchmark for this model and runtime. Measure single-photo latency on the intended deployment machine. |
 
-New runs write `runs/<architecture>/<input_variant>/<run_id>/` with the configuration, split manifest, training history and best checkpoint. Under `evaluation/validation/` and `evaluation/test/`, open `wrong_predictions.csv` for individual mistakes and the class and fabric summaries for patterns. Notebook 08 writes `runs/validation_leaderboard.csv`. Notebook 09 can compare the five historical RGB checkpoints on a field CSV containing `image_path,garment_id,class_id`.
+New runs write `models/runs/<architecture>/<input_variant>/<run_id>/` with the configuration, split manifest, training history and best checkpoint. Under `evaluation/validation/` and `evaluation/test/`, open `wrong_predictions.csv` for individual mistakes and the class and fabric summaries for patterns. Notebook 08 writes `models/runs/validation_leaderboard.csv`. Notebook 09 can compare the five historical RGB checkpoints on a field CSV containing `image_path,garment_id,class_id`.
 
 ## Run the Streamlit demo
 
@@ -84,6 +86,12 @@ python -m streamlit run deployment/app.py
 ```
 
 Open the local URL printed by Streamlit and upload a JPEG or PNG. The app corrects orientation, converts to RGB, resizes the **whole photo** to 224 × 224, applies the checkpoint's normalization, and performs CPU inference. A new clone contains source only. To use a newly trained RGB EfficientNet-B0 + FPN checkpoint, set `WEIGHTS` in `deployment/app.py` to its `best_model.pth`. Other architectures or enhanced inputs require matching inference code and preprocessing.
+
+## Model storage
+
+All active training and evaluation notebooks use the project-root `models/` directory for checkpoints. Historical experiments occupy their named experiment subfolders. If an older AWS checkout stores experiments 18 and 21 under `Notebooks/models/`, move those experiment directories into the root `models/` before running notebook 09. Move any existing root `runs/` into `models/runs/` when upgrading. Preserve existing runs if a destination already exists.
+
+For the code behind the historical scores, see the [original experiment notebooks in Git history](https://github.com/Amal-Anojan/stitching-defect-detection/tree/42757a8/Notebooks/archive).
 
 ## File guide
 
@@ -99,8 +107,6 @@ Open the local URL printed by Streamlit and upload a JPEG or PNG. The app correc
 | [07 · Backbone comparison](Notebooks/07_fpn_backbone_comparison.ipynb) | Train the three additional RGB backbones. |
 | [08 · Enhanced-input comparison](Notebooks/08_input_enhancement_comparison.ipynb) | Train two enhanced variants and rank the seven candidates. |
 | [09 · Checkpoint and field evaluation](Notebooks/09_checkpoint_and_field_evaluation.ipynb) | Re-evaluate a checkpoint, rebuild historical reports or compare field predictions. |
-| [Archived ResNet experiment](Notebooks/archive/historical_resnet18_experiment.ipynb) | Original baseline, FPN training and evaluation code. |
-| [Archived FPN and enhancement experiments](Notebooks/archive/historical_fpn_and_enhancement_experiments.ipynb) | Original architecture and input comparisons, including exploratory enhanced ResNet runs. |
 | [Streamlit app](deployment/app.py) | Accept uploads, load weights, run inference and display scores and latency. |
 | [Deployment model](deployment/model.py) | Define the FPN classifier used to load the serving checkpoint. |
 | [Requirements](requirements.txt) | Python dependencies for training, analysis and serving. |
